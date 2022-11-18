@@ -1,0 +1,7 @@
+{
+  "name": "fdj-assignment",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
