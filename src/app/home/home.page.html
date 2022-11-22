@@ -1,20 +1,16 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-content>
+  <ion-searchbar show-cancel-button="always" [(ngModel)]="searchTerm" placeholder="Ligue..."></ion-searchbar>
+  <ion-list [hidden]="!searchTerm">
+    <ion-item button *ngFor="let league of leaguesItems | filter:searchTerm" >
+      <ion-label (click)="setLeaguesData(league)">{{ league.name }}</ion-label>
+      </ion-item>
+  </ion-list>
+  <ion-row [hidden]="!searchTerm" class="row-card" >
+    <ion-col size="6" class="col-card" *ngFor="let league of leaguesItems | filter:searchTerm">
+      <ion-card class="card-service">
+        <img [src]="league.imgLink" class="img-service" (click)="setLeaguesData(league)"/>
+      </ion-card>
+    </ion-col>
+  </ion-row>
 </ion-content>

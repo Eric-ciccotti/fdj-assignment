@@ -1,3 +1,30 @@
+// .row-card{
+//   padding: 0px 5px 0px 5px;
+
+//   .col-card{
+//       padding: 0px;
+
+//       .card-service{
+
+//           margin: 0px;
+//           border-radius: 0px;
+
+//           box-shadow: 0px 0px;
+
+//           .img-service{
+//               height: 100%;
+//               width: 100%;
+//               object-fit: cover;
+//               margin: 0 auto;
+//               border: 0 solid #024f9a;
+//               background: linear-gradient(#0486ca,#024f9a);
+//               padding: 15px;
+//               font-weight: bold;
+//               }
+//       }
+//   }
+// }
+
 #container {
   text-align: center;
 
@@ -25,3 +52,10 @@
 #container a {
   text-decoration: none;
 }
+
+ @media(orientation: portrait) {
+     ion-content {
+      padding-top: constant(safe-area-inset-top); //ios 11.2
+      padding-top: env(safe-area-inset-top); //ios 11.1
+   }
+ }

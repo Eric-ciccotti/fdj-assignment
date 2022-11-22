@@ -1,0 +1,10 @@
+
+<ion-content>
+  <ion-row class="row-card" >
+    <ion-col size="6" class="col-card" *ngFor="let team of teams">
+      <ion-card class="card-service">
+        <img [src]="team.thumbnail" class="img-service"  />
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>
