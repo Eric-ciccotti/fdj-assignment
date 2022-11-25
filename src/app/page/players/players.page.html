@@ -1,9 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>players</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-grid>
+  <ion-row lines="none" *ngFor="let player of playersFromSelectedTeamId">
+    <ion-col>
+        <img alt="Silhouette of mountains" [src]="player.thumbnail" />
+    </ion-col>
+    <ion-col size="auto">
+      <ion-label>
+          <h1>{{player.name}}</h1>
+          <p>{{player.position}}</p>
+          <p>{{player.born}}</p>
+          <p>{{player.signin.amount}}</p>
 
-<ion-content>
 
-</ion-content>
+
+      </ion-label>
+    </ion-col>
+  </ion-row>
+</ion-grid>
