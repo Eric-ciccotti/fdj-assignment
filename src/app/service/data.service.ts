@@ -1,6 +1,9 @@
+
+import { Player } from './../interfaces/Player';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { Leagues } from "../types/Leagues";
+import { League } from "../interfaces/League";
+import { Team } from '../interfaces/Team';
 
 @Injectable({
   providedIn: 'root'
@@ -12,32 +15,28 @@ export class DataService {
 
   constructor() { }
 
-  setleaguesData(data: Leagues[]) {
+  setleaguesData(data: League[]) {
     this._leaguesData.next(data);
   }
 
-  getleaguesData(): Observable<Leagues[]> {
-    return this._leaguesData.asObservable();
-  }
-
-  setTeamsData(data: any[]) {
-    console.log('set');
+  setTeamsData(data: Team[]) {
     this._teamsData.next(data);
   }
 
-  getTeamsData(): Observable<any[]> {
-    return this._teamsData.asObservable();
-  }
-
-
-  set setPlayersData(data: Leagues[]) {
-    console.log('set');
+  setPlayerData(data: Player[]) {
     this._playersData.next(data);
   }
 
+  getLeaguesData(): Observable<League[]> {
+    return this._leaguesData.asObservable();
+  }
 
-  get getPlayersData(): Subject<Leagues[]> {
-    return this._playersData;
+  getTeamsData(): Observable<Team[]> {
+    return this._teamsData.asObservable();
+  }
+
+  getPlayerData(): Observable<Player[]> {
+    return this._playersData.asObservable();
   }
 
 }

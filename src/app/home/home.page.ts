@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { DataService } from '../service/data.service';
-import { Leagues } from '../types/Leagues';
-import { LeaguesImageLink } from '../types/LeaguesImgLink.enum';
+import { League } from '../interfaces/League';
+import { LeaguesImageLink } from '../types/leaguesImgLink.enum';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
   searchTerm: string = '';
-  leaguesItems: Leagues[] = [];
+  leaguesItems: League[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -30,27 +30,26 @@ export class HomePage implements OnInit {
   }
 
   async loadLeagues(): Promise<void> {
-    //spinner
+    (await this.showSpinner()).present
+    this.apiService
+      .getAllLeagues()
+      .pipe(distinctUntilChanged())
+      .subscribe((res: League[]) => {
+        this.leaguesItems = res;
+        this.addImgLink();
+      });
+    (await this.showSpinner()).dismiss()
+  }
+
+  async showSpinner(): Promise<HTMLIonLoadingElement> {
     const loading = await this.loadingCtrl.create({
       message: 'Loading..',
       spinner: 'bubbles',
     });
-    await loading.present();
-
-    //api call to get data, prevent from multiple call if data doesn't change
-    this.apiService
-      .getAllLeagues()
-      .pipe(distinctUntilChanged())
-      .subscribe((res: any) => {
-        loading.dismiss();
-        this.leaguesItems = res;
-        this.addImgLink();
-      });
-
+    return loading;
   }
-
   addImgLink(): void {
-    this.leaguesItems = this.leaguesItems.map((item: Leagues) => {
+    this.leaguesItems = this.leaguesItems.map((item: League) => {
       return {
         ...item,
         imgLink:
@@ -61,7 +60,7 @@ export class HomePage implements OnInit {
     });
   }
 
-  async showAlert() {
+  async showAlert(): Promise<void> {
     const alert = await this.alertController.create({
       header: "Alert",
       message: "Il n'y a pas encore d'équipes !",
@@ -71,7 +70,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  setLeaguesData(league: Leagues): void {
+  setLeaguesData(league: League): void {
     if (league.teams?.length === 0) {
       this.showAlert()
       return;

@@ -1,19 +1,22 @@
+import { ActivatedRoute } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TeamsPage } from './teams.page';
+import { Teams } from './teams.page';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('TeamsPage', () => {
-  let component: TeamsPage;
-  let fixture: ComponentFixture<TeamsPage>;
+describe('Teams', () => {
+  let component: Teams;
+  let fixture: ComponentFixture<Teams>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TeamsPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [Teams],
+      imports: [IonicModule.forRoot(), HttpClientTestingModule, RouterTestingModule]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TeamsPage);
+    fixture = TestBed.createComponent(Teams);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
