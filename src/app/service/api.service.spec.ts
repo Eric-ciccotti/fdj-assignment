@@ -54,7 +54,7 @@ describe('ApiService', () => {
   })
 
   it('should call getAllPlayer and return array of Player', () => {
-    service.getAllTeams().subscribe((res) => {
+    service.getAllPlayers().subscribe((res) => {
       expect(res).toEqual(mockPlayerArray);
     })
     const req = httpController.expectOne({
@@ -63,7 +63,4 @@ describe('ApiService', () => {
     })
     req.flush(mockPlayerArray)
   })
-
-
-
 });

@@ -17,14 +17,14 @@ teamRoute.route('/').get((req, res) => {
 })
 
 // Get single team
-teamRoute.route('/read/:id').get((req, res) => {
-  Team.findById(req.params.id, (error, data) => {
-    if (error) {
-      return next(error)
-    } else {
-      res.json(data)
-    }
-  })
-})
+// teamRoute.route('/read/:id').get((req, res) => {
+//   Team.findById(req.params.id, (error, data) => {
+//     if (error) {
+//       return next(error)
+//     } else {
+//       res.json(data)
+//     }
+//   })
+// })
 
 module.exports = teamRoute
