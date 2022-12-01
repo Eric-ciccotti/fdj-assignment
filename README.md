@@ -2,6 +2,9 @@
 
 Exercice application mobile.
 
+![Alt Text](https://github.com/Eric-ciccotti/fdj-assignment/blob/main/app.gif)
+
+
 ## Stack :
 ### Front : 
 - Angular , Ionic
