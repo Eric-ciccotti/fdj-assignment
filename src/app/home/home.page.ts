@@ -80,6 +80,5 @@ export class HomePage implements OnInit {
         relativeTo: this.route,
       });
     }
-
   }
 }
