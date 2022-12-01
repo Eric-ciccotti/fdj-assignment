@@ -15,12 +15,12 @@
     <ion-col size="4">
         <img alt="Silhouette of mountains" [src]="player.thumbnail" />
     </ion-col>
-    <ion-col size="6">
-      <ion-label>
+    <ion-col size="8">
+      <ion-label class="custom-text">
           <h2>{{player.name}}</h2>
           <p>{{player.position}}</p>
-          <p>{{player.born}}</p>
-          <p>{{player.signin.amount}}</p>
+          <p>birthDate : {{player.born | date:'yyyy-MM-dd'}}</p>
+          <p>price: {{player.signin.amount | currency:(player.signin.currency.toUpperCase()):'symbol':'4.2-2':'fr'}}</p>
       </ion-label>
     </ion-col>
   </ion-row>

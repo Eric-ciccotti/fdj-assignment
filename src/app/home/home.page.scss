@@ -1,29 +1,11 @@
-// .row-card{
-//   padding: 0px 5px 0px 5px;
+.card-service {
+  box-shadow: none;
+  background-color: rgb(0, 0, 0)
+}
 
-//   .col-card{
-//       padding: 0px;
-
-//       .card-service{
-
-//           margin: 0px;
-//           border-radius: 0px;
-
-//           box-shadow: 0px 0px;
-
-//           .img-service{
-//               height: 100%;
-//               width: 100%;
-//               object-fit: cover;
-//               margin: 0 auto;
-//               border: 0 solid #024f9a;
-//               background: linear-gradient(#0486ca,#024f9a);
-//               padding: 15px;
-//               font-weight: bold;
-//               }
-//       }
-//   }
-// }
+.row-card {
+  background-color: rgb(0, 0, 0)
+}
 
 #container {
   text-align: center;
