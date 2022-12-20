@@ -30,24 +30,25 @@ export class HomePage implements OnInit {
   }
 
   async loadLeagues(): Promise<void> {
-    (await this.showSpinner()).present
+    const loading = await this.loadingSpinner();
+    loading.present();
     this.apiService
       .getAllLeagues()
-      .pipe(distinctUntilChanged())
       .subscribe((res: League[]) => {
         this.leaguesItems = res;
         this.addImgLink();
       });
-    (await this.showSpinner()).dismiss()
+      loading.dismiss()
   }
 
-  async showSpinner(): Promise<HTMLIonLoadingElement> {
-    const loading = await this.loadingCtrl.create({
+
+  private async loadingSpinner() {
+    return await this.loadingCtrl.create({
       message: 'Loading..',
       spinner: 'bubbles',
     });
-    return loading;
   }
+
   addImgLink(): void {
     this.leaguesItems = this.leaguesItems.map((item: League) => {
       return {

@@ -1,37 +1,47 @@
-import { MockLoadingController } from './../../mocks/IonicMock';
-import { League } from './../interfaces/League';
+
 import { mockLeagueArray, mockLeagueArrayImageLink } from './../../mocks/mockLeagues';
 import { ApiService } from 'src/app/service/api.service';
 import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter/';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
-  async,
   ComponentFixture,
-  fakeAsync,
   TestBed,
-  tick,
   waitForAsync,
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 
-import { delay } from 'rxjs/operators';
+
 
 import { HomePage } from './home.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { AlertController, IonicModule, LoadingController } from '@ionic/angular';
-import { AlertControllerMock } from 'ionic-mocks-jest-rxjs6/dist/angular/alert-controller';
-import { LoadingControllerMock } from 'ionic-mocks-jest-rxjs6';
+import { IonicModule, LoadingController } from '@ionic/angular';
+
 import { of } from 'rxjs';
 
 fdescribe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
-  let apiService: ApiService;
+  let fakeApiService: ApiService;
+
+  //fake ionic loading methods
+  let loadingSpy = jasmine.createSpyObj('loadingCtrl', ['create', 'present', 'onDidDismiss', 'dismiss']);
+  loadingSpy.create.and.returnValue(Promise.resolve(true))
+
+//fake ionic loading controller
+  let loadingCtrlSpy = jasmine.createSpyObj('LoadingController', ['create']);
+  loadingCtrlSpy.create.and.callFake(function () {
+    return loadingSpy;
+  });
 
   beforeEach(async () => {
+    //create fake api service
+    fakeApiService = jasmine.createSpyObj<ApiService>('apiService', {
+      getAllLeagues: of(mockLeagueArray)
+    })
+
     await TestBed.configureTestingModule({
       declarations: [HomePage],
       teardown: { destroyAfterEach: false },
@@ -44,14 +54,13 @@ fdescribe('HomePage', () => {
         FormsModule,
       ],
       providers: [
-        ApiService
+        { provide: ApiService, useValue: fakeApiService },
+        { provide: LoadingController, useValue: loadingCtrlSpy }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
     component = fixture.componentInstance;
-    apiService = TestBed.inject(ApiService)
-
     fixture.detectChanges();
   });
 
@@ -68,41 +77,37 @@ fdescribe('HomePage', () => {
   });
 
 
-  it('should call getAllLeagues service and fill leaguesItems array', fakeAsync(() => {
+  it('should call getAllLeagues service and fill leaguesItems array with image link', waitForAsync(() => {
     //ARRANGE
-    spyOn(apiService, 'getAllLeagues').and.returnValue(of(mockLeagueArray)).and.callThrough()
-
     //ACT
     component.loadLeagues()
-    tick(1000)
-    fixture.detectChanges()
-
-    //ASSERT
-    expect(component.leaguesItems).toEqual(mockLeagueArray)
+    fixture.whenStable().then(() => {
+      fixture.detectChanges()
+      //ASSERT
+      expect(loadingSpy.present).toHaveBeenCalled()
+      expect(fakeApiService.getAllLeagues).toHaveBeenCalled()
+      expect(loadingSpy.dismiss).toHaveBeenCalled()
+      expect(component.leaguesItems).toEqual(mockLeagueArrayImageLink)
+    })
   }))
-});
 
-  // describe('showSpinner', () => {
-  //   it('should show spinner if true', fakeAsync(() => {
-  //     component.showSpinner(true).then(() => {
-  //       expect(loadingCtrl.loading).toHaveBeenCalled()
-  //     })
-  //   }));
-  //   it('should remove spinner if false', fakeAsync(() => {
-  //     component.showSpinner(false).then(() => {
-  //       expect(loadingCtrl.loading).toHaveBeenCalled()
-  //     })
-  //   }))
-  // })
 
-  // it('shoud call addImLink and add images links to leaguesItems array', () => {
-  //   component.leaguesItems = mockLeagueArray;
-  //   component.addImgLink()
-  //   expect(component.leaguesItems).toEqual(mockLeagueArrayImageLink)
-  // })
+  describe('loadingSpinner', () => {
+    it('should create spinner', waitForAsync(() => {
+      component['loadingSpinner']()
+        expect(loadingCtrlSpy.create).toHaveBeenCalled()
+      }));
+  })
+
+  it('shoud call addImLink and add images links to leaguesItems array', () => {
+    component.leaguesItems = mockLeagueArray;
+    component.addImgLink()
+    expect(component.leaguesItems).toEqual(mockLeagueArrayImageLink)
+  })
 
   // it('should call showAlert and show alert message', (() => {
   //   component.showAlert()
   //   expect(alertCtrl.create).toHaveBeenCalled();
   // }))
 
+})
